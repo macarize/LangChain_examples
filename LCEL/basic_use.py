@@ -7,12 +7,11 @@ from dotenv import load_dotenv, find_dotenv
 import time
 
 openai.api_key = os.environ.get('OPENAI_API_KEY')
-GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
 
 '''
 Simple Chain
 '''
-model = ChatGroq(temperature=0, model_name="llama-3.3-70b-versatile", groq_api_key=GROQ_API_KEY, max_tokens=50)
+model = ChatGroq(temperature=0, model_name="llama-3.3-70b-versatile", max_tokens=150)
 
 prompt = ChatPromptTemplate.from_template(
     "Tell me a short advice about {topic}"
@@ -78,5 +77,7 @@ promt = ChatPromptTemplate.from_messages(
         ("human", "{input}")
     ]
 )
-model = ChatGroq(temperature=0, groq_api_key=GROQ_API_KEY).bind(functions=functions)
+model = ChatGroq(temperature=0, model_name="llama-3.3-70b-versatile").bind(functions=functions)
 runnable = promt | model
+
+print(runnable.invoke({"input": "What is the weather in San Francisco?"}))
